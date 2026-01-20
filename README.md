@@ -246,9 +246,6 @@ elif yaw > 20:
 else:
     return "RIGHT"
 ```
-
-Backend **không tin frontend**, luôn tự kiểm tra pose.
-
 ---
 
 ## 7. Lưu ý quan trọng
@@ -256,7 +253,6 @@ Backend **không tin frontend**, luôn tự kiểm tra pose.
 * ❌ Không gửi đủ 5 ảnh → không finalize
 * ❌ Sai pose → reject
 * ❌ Thiếu token → `Not authenticated`
-* ❌ Không dùng `await` với Mongo async → crash
 
 ---
 
@@ -277,5 +273,3 @@ Backend **không tin frontend**, luôn tự kiểm tra pose.
 ✔ Dễ mở rộng production
 
 ---
-
-📌 Tác giả: *Face Authentication System*
