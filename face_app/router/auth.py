@@ -1,7 +1,7 @@
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi import Header
-from datetime import timedelta
+from datetime import timedelta, timezone
 from bson import ObjectId
 from datetime import datetime
 from face_app.face.embedding import cosine_similarity
@@ -99,7 +99,7 @@ async def register_init(
         "password_hash": get_password_hash(password),
         "status": "PENDING",
         "face_embeddings": {},   # chưa có ảnh
-        "created_at": datetime.utcnow()
+        "created_at": datetime.now(timezone.utc)
     }
 
     result = await db.users.insert_one(user)
@@ -175,10 +175,10 @@ async def upload_face(
     }
 @router.post("/register/finalize")
 async def finalize_register(
-    current_user = Depends(get_current_user),
+    user_id: str = Form(...),
     db = Depends(get_db)
 ):
-    user = current_user
+    user = await db.users.find_one({"_id": ObjectId(user_id)})
     if not user:
         raise HTTPException(404, "User not found")
 
